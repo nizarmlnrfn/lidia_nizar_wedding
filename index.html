@@ -62,12 +62,15 @@ h1,h2,p{margin:0}
 .rsvp{background:var(--blue)}
 .rsvp h2{color:var(--ink)}
 .form{display:grid;gap:12px}
-input,textarea{width:100%;border:1px solid rgba(0,0,0,.18);border-radius:14px;padding:15px;background:#ffffff55;font:inherit;outline:none}
-textarea{min-height:95px;resize:vertical}
+input[type="text"]{width:100%;border:2px solid rgba(29,29,27,.16);border-radius:16px;padding:16px;background:#ffffffb8;font:inherit;outline:none}
+input[type="text"]:focus{border-color:var(--pink);background:#fff}
+.field-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:-5px}
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.choice label{background:#fff9;border-radius:14px;padding:13px;text-align:center;font-weight:700;font-size:12px;cursor:pointer}
-.choice input{display:none}.choice input:checked+span{font-weight:900;color:var(--pink)}
-.gift{margin-top:22px;background:#ffffff66;border-radius:24px;padding:20px}
+.choice label{background:#ffffffb8;border:2px solid transparent;border-radius:16px;padding:14px 10px;text-align:center;font-weight:700;font-size:12px;cursor:pointer;box-shadow:3px 3px 0 rgba(29,29,27,.08)}
+.choice label:has(input:checked){border-color:var(--pink);background:#fff}
+.choice input{position:absolute;opacity:0;pointer-events:none}.choice input:checked+span{font-weight:900;color:var(--pink)}
+.rsvp-note{font-size:11px;line-height:1.5;opacity:.8;text-align:center;margin-top:2px}
+.gift{margin-top:22px;background:#ffffff80;border:2px solid #ffffff80;border-radius:24px;padding:20px;box-shadow:5px 5px 0 rgba(29,29,27,.06)}
 .gift h3{margin:0 0 7px;font-size:14px;text-transform:uppercase;letter-spacing:.15em}
 .closing{background:var(--orange);color:#fff;justify-content:flex-end}
 .closing .script{font-size:clamp(58px,17vw,92px);font-weight:900;line-height:.78;letter-spacing:-.07em;font-style:italic}
@@ -268,16 +271,19 @@ textarea{min-height:95px;resize:vertical}
 
 <section class="screen rsvp" id="rsvp">
   <div class="logo"><span>L / N</span><span class="menu">☰</span></div>
-  <div class="kicker" style="margin-top:24px">Konfirmasi Kehadiran</div>
-  <h2>Will you<br>be there?</h2>
+  <div class="kicker" style="margin-top:24px">RSVP · 28 NOV 2026</div>
+  <h2>Are you<br>coming? <span style="color:var(--pink)">♡</span></h2>
+  <p style="font-size:14px;line-height:1.5;margin-top:-20px;margin-bottom:22px">We can't wait to celebrate with you!</p>
   <form class="form" onsubmit="submitRsvp(event)">
-    <input id="guest" required placeholder="Nama Anda">
+    <label class="field-label" for="guest">Nama lengkap</label>
+    <input type="text" id="guest" name="guest" required autocomplete="name" placeholder="Tulis nama kamu...">
+    <div class="field-label" style="margin-top:5px">Konfirmasi kehadiran</div>
     <div class="choice">
-      <label><input type="radio" name="attendance" value="Hadir" checked><span>✓ Hadir</span></label>
-      <label><input type="radio" name="attendance" value="Tidak Hadir"><span>Tidak Hadir</span></label>
+      <label><input type="radio" name="attendance" value="Hadir" required><span>♥ Aku hadir!</span></label>
+      <label><input type="radio" name="attendance" value="Tidak Hadir" required><span>♡ Belum bisa hadir</span></label>
     </div>
-    <textarea id="message" placeholder="Ucapan untuk kami (opsional)"></textarea>
-    <button class="cta" type="submit">Konfirmasi via WhatsApp&nbsp; →</button>
+    <button class="cta" type="submit">Kirim Konfirmasi&nbsp; →</button>
+    <p class="rsvp-note">Konfirmasi akan dibuka melalui WhatsApp.</p>
   </form>
   <div class="gift">
     <h3>♡ Wedding Gift</h3>
@@ -348,9 +354,17 @@ tick(); setInterval(tick,1000);
 function submitRsvp(e){
   e.preventDefault();
   const name=document.getElementById("guest").value.trim();
-  const att=document.querySelector('input[name="attendance"]:checked').value;
-  const msg=document.getElementById("message").value.trim();
-  alert(`Terima kasih, ${name}!\\nStatus: ${att}${msg ? "\\nUcapan: "+msg : ""}\\n\\nForm ini siap dihubungkan ke WhatsApp/Google Sheets setelah nomor admin ditentukan.`);
+  const selected=document.querySelector('input[name="attendance"]:checked');
+  if(!name || !selected) return;
+  const att=selected.value;
+  const message=`Halo Lidia & Nizar! 👋
+
+Saya ${name}.
+Konfirmasi kehadiran: ${att}.
+
+Terima kasih!`;
+  const url='https://wa.me/6281286096673?text='+encodeURIComponent(message);
+  window.open(url,'_blank','noopener,noreferrer');
 }
 </script>
 </body>
