@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7c62f">
+  <title>Admin Undangan | Lidia & Nizar</title>
+  <style>
+    :root{--yellow:#f7c62f;--pink:#f45b73;--ink:#211d18;--muted:#6f6a62;--paper:#fffaf0}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:#f8f5ed;color:var(--ink);font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center;padding:22px}
+    .wrap{width:min(100%,520px)}
+    .brand{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}
+    .card{background:white;border:2px solid var(--ink);border-radius:24px;padding:clamp(22px,5vw,34px);box-shadow:7px 7px 0 var(--ink)}
+    h1{font-size:clamp(32px,8vw,48px);line-height:.95;letter-spacing:-.06em;margin:0 0 12px}
+    .intro{color:var(--muted);line-height:1.5;margin:0 0 26px}
+    label{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px}
+    input{width:100%;font:inherit;font-size:16px;padding:15px 14px;border:2px solid var(--ink);border-radius:12px;outline:none;background:var(--paper)}
+    input:focus{box-shadow:0 0 0 3px #f7c62f88}
+    .preview{margin-top:20px;background:var(--yellow);border-radius:16px;padding:17px}
+    .preview small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+    .preview strong{font-size:22px;overflow-wrap:anywhere}
+    .url{font-size:13px;line-height:1.5;overflow-wrap:anywhere;background:#f7f5f0;padding:12px;border-radius:10px;margin-top:12px}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    button,a.btn{appearance:none;border:2px solid var(--ink);border-radius:999px;padding:13px 12px;font:inherit;font-size:13px;font-weight:800;text-align:center;text-decoration:none;cursor:pointer;color:var(--ink);background:white}
+    button.primary{background:var(--pink);color:white;border-color:var(--pink)}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .status{min-height:18px;font-size:12px;color:var(--muted);margin:12px 0 0}
+    .note{font-size:12px;line-height:1.5;color:var(--muted);margin:22px 2px 0}
+    @media(max-width:380px){.actions{grid-template-columns:1fr}.card{padding:22px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="brand">Lidia & Nizar · 28 November 2026</p>
+    <section class="card">
+      <h1>Generator<br>Undangan 💌</h1>
+      <p class="intro">Masukkan nama tamu, lalu salin link khusus untuk dikirim secara personal.</p>
+      <label for="guest">Nama tamu undangan</label>
+      <input id="guest" type="text" maxlength="120" placeholder="Contoh: Bapak Budi Santoso" autocomplete="off">
+      <div class="preview" aria-live="polite">
+        <small>Preview nama di cover</small>
+        <strong id="previewName">Tamu Undangan</strong>
+      </div>
+      <div class="url" id="urlBox">Isi nama tamu untuk membuat link.</div>
+      <div class="actions">
+        <button class="primary" id="copyBtn" disabled>Salin Link</button>
+        <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener" aria-disabled="true" style="pointer-events:none;opacity:.45">Tes Undangan</a>
+      </div>
+      <p class="status" id="status" role="status"></p>
+    </section>
+    <p class="note">Tips: buat satu link untuk setiap nama, lalu kirim ke tamu yang sesuai. Link ini menampilkan nama berdasarkan parameter URL; orang yang mengubah link juga dapat mengubah nama yang terlihat.</p>
+  </main>
+  <script>
+    const BASE_URL = 'https://nizarmlnrfn.github.io/lidia_nizar_wedding/';
+    const input = document.getElementById('guest');
+    const previewName = document.getElementById('previewName');
+    const urlBox = document.getElementById('urlBox');
+    const copyBtn = document.getElementById('copyBtn');
+    const openBtn = document.getElementById('openBtn');
+    const status = document.getElementById('status');
+    let currentUrl = '';
+    function update(){
+      const name = input.value.trim();
+      previewName.textContent = name || 'Tamu Undangan';
+      currentUrl = name ? BASE_URL + '?to=' + encodeURIComponent(name) : '';
+      urlBox.textContent = currentUrl || 'Isi nama tamu untuk membuat link.';
+      copyBtn.disabled = !currentUrl;
+      openBtn.href = currentUrl || '#';
+      openBtn.style.pointerEvents = currentUrl ? 'auto' : 'none';
+      openBtn.style.opacity = currentUrl ? '1' : '.45';
+      openBtn.setAttribute('aria-disabled', currentUrl ? 'false' : 'true');
+      status.textContent = '';
+    }
+    input.addEventListener('input', update);
+    copyBtn.addEventListener('click', async () => {
+      if (!currentUrl) return;
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        status.textContent = 'Link berhasil disalin. Tinggal kirim ke tamu!';
+      } catch (e) {
+        const area = document.createElement('textarea');
+        area.value = currentUrl; area.style.position = 'fixed'; area.style.opacity = '0';
+        document.body.appendChild(area); area.select();
+        const ok = document.execCommand('copy'); area.remove();
+        status.textContent = ok ? 'Link berhasil disalin. Tinggal kirim ke tamu!' : 'Salin link dari kotak di atas secara manual.';
+      }
+    });
+    update();
+  </script>
+</body>
+</html>
