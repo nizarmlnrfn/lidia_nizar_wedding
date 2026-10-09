@@ -23,6 +23,10 @@ body{margin:0;background:#eee;font-family:"DM Sans",sans-serif;color:var(--ink)}
 .kicker{text-transform:uppercase;letter-spacing:.28em;font-size:11px;font-weight:700}
 h1,h2,p{margin:0}
 .cover{background:var(--yellow);justify-content:space-between}
+.cover-recipient{position:absolute;top:8.5%;right:5%;z-index:10;width:43%;max-width:220px;text-align:right;color:var(--ink);pointer-events:none}
+.cover-recipient-label{display:block;font-size:clamp(8px,2.2vw,11px);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.cover-recipient-name{display:block;font-size:clamp(12px,3.4vw,17px);line-height:1.12;font-weight:900;overflow-wrap:anywhere}
+@media(max-width:360px){.cover-recipient{top:9%;width:40%}.cover-recipient-name{font-size:11px}}
 .cover h1{font-size:clamp(60px,17vw,100px);line-height:.78;letter-spacing:-.07em;font-weight:900;margin-top:16vh}
 .cover h1 span{display:block}
 .amp{color:var(--pink);font-family:"Playfair Display",serif;font-style:italic;font-size:.6em;text-align:center;line-height:.55}
@@ -54,7 +58,7 @@ h1,h2,p{margin:0}
 .details h2,.rsvp h2{font-size:42px;line-height:.9;text-transform:uppercase;margin:24px 0 34px}
 .info{display:grid;gap:18px}
 .row{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}
-.icon{font-size:25px}.row b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}.row span{font-size:17px;font-weight:700}
+.icon{font-size:25px}.row b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}.row span{font-size:17px;font-weight:700}.row .venue-address{display:block;font-size:12px;line-height:1.45;font-weight:500;margin-top:5px;max-width:100%;overflow-wrap:anywhere}
 .map{margin-top:auto;background:#eee8d8;color:#222;border-radius:22px;height:190px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;position:relative;overflow:hidden}
 .map:before{content:"";position:absolute;inset:0;background:linear-gradient(25deg,transparent 46%,#d2d2c6 47%,#d2d2c6 49%,transparent 50%),linear-gradient(120deg,transparent 40%,#d7d7ca 41%,#d7d7ca 43%,transparent 44%);opacity:.8}
 .map span{position:relative;background:#fff;border-radius:999px;padding:12px 16px;box-shadow:0 4px 12px #0002}
@@ -194,6 +198,7 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
 <main class="page">
 
 <section class="screen cover" id="home">
+  <div class="cover-recipient" aria-live="polite"><span class="cover-recipient-label">Kepada Yth.</span><span class="cover-recipient-name" id="recipientName">Tamu Undangan</span></div>
   <div class="cover-hero-title">It's<br>Our Time</div>
   <div class="cover-doodle star">✦</div>
   <div class="cover-doodle heart pink">♡</div>
@@ -260,11 +265,11 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
     <div class="info">
       <div class="row"><div class="icon">▣</div><div><b>Tanggal</b><span>Sabtu, 28 November 2026</span></div></div>
       <div class="row"><div class="icon">♡</div><div><b>Akad Nikah</b><span>10.00 – 11.00 WIB</span></div></div><div class="row"><div class="icon">♡</div><div><b>Resepsi</b><span>11.00 – 13.00 WIB</span></div></div>
-      <div class="row"><div class="icon">⌖</div><div><b>Venue</b><span>Bale Sari Venue</span></div></div>
+      <div class="row"><div class="icon">⌖</div><div><b>Venue</b><span>Bale Sari Venue (Saung Gandasari)</span><span class="venue-address">Jl. Raya Bojongsari No.56, Bojongsari Baru, Bojongsari, Depok City, West Java 16516</span></div></div>
     </div>
   </div>
   <div style="margin-top:auto">
-    <div class="map"><span>📍 Bale Sari Venue</span></div>
+    <div class="map"><span>📍 Bale Sari Venue · Depok</span></div>
     <a class="maps" target="_blank" href="https://maps.app.goo.gl/HpdUeRVZWUmWBGoJ6?g_st=ac">Buka di Google Maps&nbsp; →</a>
   </div>
 </section>
@@ -275,8 +280,8 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
   <h2>Are you<br>coming? <span style="color:var(--pink)">♡</span></h2>
   <p style="font-size:14px;line-height:1.5;margin-top:-20px;margin-bottom:22px">We can't wait to celebrate with you!</p>
   <form class="form" onsubmit="submitRsvp(event)">
-    <label class="field-label" for="guest">Nama lengkap</label>
-    <input type="text" id="guest" name="guest" required autocomplete="name" placeholder="Tulis nama kamu...">
+    <label class="field-label" for="guest">Nama tamu undangan</label>
+    <input type="text" id="guest" name="guest" required autocomplete="name" placeholder="Masukkan nama sesuai undangan...">
     <div class="field-label" style="margin-top:5px">Konfirmasi kehadiran</div>
     <div class="choice">
       <label><input type="radio" name="attendance" value="Hadir" required><span>♥ Aku hadir!</span></label>
@@ -326,6 +331,14 @@ function updateMusicButton(){
   musicToggle.classList.toggle("is-playing", playing);
   musicToggle.setAttribute("aria-label", playing ? "Jeda musik" : "Putar musik");
 }
+// Personalize Page 1 from a link such as ?to=Budi%20Santoso
+(function setRecipientName(){
+  const params = new URLSearchParams(window.location.search);
+  const rawName = (params.get('to') || params.get('nama') || '').trim();
+  const recipient = document.getElementById('recipientName');
+  if (rawName) recipient.textContent = rawName;
+})();
+
 function openInvitation(){
   document.querySelector('#welcome').scrollIntoView({behavior:'smooth'});
   musicToggle.classList.add('is-visible');
