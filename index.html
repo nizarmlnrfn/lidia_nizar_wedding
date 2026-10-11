@@ -76,9 +76,6 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
 .rsvp-note{font-size:11px;line-height:1.5;opacity:.8;text-align:center;margin-top:2px}
 .gift{margin-top:22px;background:#ffffff80;border:2px solid #ffffff80;border-radius:24px;padding:20px;box-shadow:5px 5px 0 rgba(29,29,27,.06)}
 .gift h3{margin:0 0 7px;font-size:14px;text-transform:uppercase;letter-spacing:.15em}
-.copy-account{margin-top:7px;border:1.5px solid var(--ink);border-radius:999px;background:var(--cream);color:var(--ink);padding:8px 13px;font:inherit;font-size:11px;font-weight:900;cursor:pointer;}
-.copy-account:active{transform:scale(.98)}
-.copy-status{font-size:11px;margin-top:5px;min-height:14px;color:#286b42}
 .closing{background:#202022;color:#f582b2;justify-content:flex-start}
 .closing .script{font-size:clamp(58px,17vw,92px);font-weight:900;line-height:.78;letter-spacing:-.07em;font-style:italic;color:#f582b2}
 .closing .names{font-family:"Playfair Display",serif;font-size:40px;margin-top:28px;color:#f582b2}
@@ -254,7 +251,7 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
 <section class="screen welcome" id="welcome">
   <div class="welcome-topbar"><span class="welcome-mark">L / N</span><span class="welcome-menu">☰</span></div>
   <div class="welcome-doodle wd1">YAY!</div>
-  <div class="welcome-doodle wd2">♡</div>
+  <!-- Removed overlapping heart doodle from the GETTING text -->
   <div class="welcome-doodle wd3">✦</div>
   <div class="welcome-doodle wd4">〰</div>
   <div class="welcome-doodle wd5">✿</div>
@@ -274,17 +271,17 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
   </div>
 </section>
 
-<section class="screen quran-verse" id="adz-dzariyat">
+<section class="screen quran-verse" id="ar-rum">
   <div class="logo"><span>L / N</span><span class="menu">☰</span></div>
   <div class="verse-content">
     <div class="verse-kicker">A Verse for Our Beginning</div>
-    <div class="verse-reference">QS. ADZ-DZARIYAT : 49</div>
-    <div class="verse-arabic" lang="ar" dir="rtl">وَمِنْ كُلِّ شَيْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ ۝٤٩</div>
+    <div class="verse-reference">QS. AR-RUM : 21</div>
+    <div class="verse-arabic" lang="ar" dir="rtl">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ ۝٢١</div>
     <div class="verse-divider"><span>✦</span></div>
     <div class="verse-label">Bacaan</div>
-    <p class="verse-latin">Wa min kulli syai’in khalaqnā zaujaini la‘allakum tadzakkarūn.</p>
+    <p class="verse-latin">Wa min āyātihī an khalaqa lakum min anfusikum azwājal litaskunū ilaihā wa ja‘ala bainakum mawaddataw wa raḥmah. Inna fī żālika la’āyātil liqaumiy yatafakkarūn.</p>
     <div class="verse-label">Artinya</div>
-    <p class="verse-translation">“Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah).”</p>
+    <p class="verse-translation">“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.”</p>
     <div class="verse-footnote">Semoga Allah senantiasa membimbing langkah kami dalam membangun kehidupan bersama.</div>
   </div>
   <div class="verse-page-mark">LIDIA <span>♡</span> NIZAR</div>
@@ -345,15 +342,11 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">BCA</p>
       <p style="margin-top:4px;font-size:13px;font-weight:900">Lidia Apriyani</p>
       <p style="font-size:13px">4731817035</p>
-      <button class="copy-account" type="button" onclick="copyAccountNumber('4731817035', 'copyLidiaStatus')">Salin No. Rekening</button>
-      <p class="copy-status" id="copyLidiaStatus" aria-live="polite"></p>
     </div>
     <div style="margin-top:12px">
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">BCA</p>
       <p style="margin-top:4px;font-size:13px;font-weight:900">Nizar Maulana Rifan</p>
       <p style="font-size:13px">2170382938</p>
-      <button class="copy-account" type="button" onclick="copyAccountNumber('2170382938', 'copyNizarStatus')">Salin No. Rekening</button>
-      <p class="copy-status" id="copyNizarStatus" aria-live="polite"></p>
     </div>
     <div style="margin-top:16px;padding-top:12px;border-top:1px solid #0002">
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">WEDDING GIFT VIA KIRIMAN</p>
@@ -424,29 +417,6 @@ function tick(){
   ["days","hours","mins","secs"].forEach((id,i)=>document.getElementById(id).textContent=String(vals[i]).padStart(2,"0"));
 }
 tick(); setInterval(tick,1000);
-
-async function copyAccountNumber(number, statusId){
-  const status = document.getElementById(statusId);
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(number);
-    } else {
-      const field = document.createElement('textarea');
-      field.value = number;
-      field.setAttribute('readonly', '');
-      field.style.position = 'fixed';
-      field.style.opacity = '0';
-      document.body.appendChild(field);
-      field.select();
-      const copied = document.execCommand('copy');
-      field.remove();
-      if (!copied) throw new Error('Copy failed');
-    }
-    status.textContent = 'Nomor rekening berhasil disalin!';
-  } catch (err) {
-    status.textContent = 'Belum bisa disalin otomatis. Silakan salin nomor di atas.';
-  }
-}
 
 function submitRsvp(e){
   e.preventDefault();
