@@ -201,6 +201,23 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
 .music-toggle.is-playing{animation:musicPulse 1.4s ease-in-out infinite;}
 @keyframes musicPulse{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(8deg) scale(1.06)}}
 @media(min-width:700px){.music-toggle{right:calc((100vw - min(100vw,520px))/2 + 18px)}}
+
+/* Added Quran verse page after the wedding announcement; previous pages remain unchanged */
+.quran-verse{background:#202022;color:#f582b2;justify-content:space-between;padding:28px 22px 24px;text-align:center;}
+.quran-verse .logo{color:#f582b2;}
+.verse-content{width:100%;max-width:560px;margin:auto;display:flex;flex-direction:column;align-items:center;gap:0;}
+.verse-kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:#f8c5d9;margin-bottom:16px;}
+.verse-reference{font-size:12px;letter-spacing:.2em;font-weight:900;color:#fff;margin-bottom:22px;}
+.verse-arabic{font-family:"Amiri","Noto Naskh Arabic","Traditional Arabic",serif;font-size:clamp(29px,8.3vw,43px);line-height:2.05;color:#fff;max-width:100%;margin:0 auto 13px;}
+.verse-divider{height:1px;width:72px;background:#f582b2;margin:11px 0 22px;display:flex;align-items:center;justify-content:center;}
+.verse-divider span{background:#202022;padding:0 10px;font-size:15px;}
+.verse-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:900;color:#f582b2;margin:0 0 8px;}
+.verse-latin{font-size:clamp(14px,3.8vw,17px);line-height:1.75;color:#fff;max-width:440px;margin:0 auto 21px;}
+.verse-translation{font-family:Georgia,serif;font-size:clamp(16px,4.3vw,20px);line-height:1.65;font-style:italic;color:#fff;max-width:450px;margin:0 auto;}
+.verse-footnote{font-size:11px;line-height:1.6;color:#e8a7c2;max-width:340px;margin:25px auto 0;}
+.verse-page-mark{font-size:10px;font-weight:900;letter-spacing:.18em;color:#f582b2;text-align:center;}
+.verse-page-mark span{font-size:14px;margin:0 5px;}
+@media(max-height:700px){.quran-verse{padding-top:20px;padding-bottom:18px}.verse-reference{margin-bottom:12px}.verse-arabic{font-size:clamp(26px,7vw,36px);line-height:1.8}.verse-divider{margin:6px 0 14px}.verse-latin{margin-bottom:14px}.verse-footnote{margin-top:15px}}
 </style>
 </head>
 <body>
@@ -252,6 +269,22 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
     <p>Okay... it's really happening! 🥹</p>
     <strong>See you on our big day! →</strong>
   </div>
+</section>
+
+<section class="screen quran-verse" id="adz-dzariyat">
+  <div class="logo"><span>L / N</span><span class="menu">☰</span></div>
+  <div class="verse-content">
+    <div class="verse-kicker">A Verse for Our Beginning</div>
+    <div class="verse-reference">QS. ADZ-DZARIYAT : 49</div>
+    <div class="verse-arabic" lang="ar" dir="rtl">وَمِنْ كُلِّ شَيْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ ۝٤٩</div>
+    <div class="verse-divider"><span>✦</span></div>
+    <div class="verse-label">Bacaan</div>
+    <p class="verse-latin">Wa min kulli syai’in khalaqnā zaujaini la‘allakum tadzakkarūn.</p>
+    <div class="verse-label">Artinya</div>
+    <p class="verse-translation">“Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah).”</p>
+    <div class="verse-footnote">Semoga Allah senantiasa membimbing langkah kami dalam membangun kehidupan bersama.</div>
+  </div>
+  <div class="verse-page-mark">LIDIA <span>♡</span> NIZAR</div>
 </section>
 
 <section class="screen count" id="countdown">
