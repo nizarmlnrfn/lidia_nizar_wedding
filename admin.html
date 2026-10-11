@@ -22,6 +22,7 @@
     .preview strong{font-size:22px;overflow-wrap:anywhere}
     .url{font-size:13px;line-height:1.5;overflow-wrap:anywhere;background:#f7f5f0;padding:12px;border-radius:10px;margin-top:12px}
     .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .share{display:block;width:100%;margin-top:10px;background:#25D366!important;color:#fff!important;border-color:#25D366!important}
     button,a.btn{appearance:none;border:2px solid var(--ink);border-radius:999px;padding:13px 12px;font:inherit;font-size:13px;font-weight:800;text-align:center;text-decoration:none;cursor:pointer;color:var(--ink);background:white}
     button.primary{background:var(--pink);color:white;border-color:var(--pink)}
     button:disabled{opacity:.45;cursor:not-allowed}
@@ -35,7 +36,7 @@
     <p class="brand">Lidia & Nizar · 28 November 2026</p>
     <section class="card">
       <h1>Generator<br>Undangan 💌</h1>
-      <p class="intro">Masukkan nama tamu, lalu salin link khusus untuk dikirim secara personal.</p>
+      <p class="intro">Masukkan nama tamu, lalu salin link atau langsung kirim pesan undangan lengkap melalui WhatsApp.</p>
       <label for="guest">Nama tamu undangan</label>
       <input id="guest" type="text" maxlength="120" placeholder="Contoh: Bapak Budi Santoso" autocomplete="off">
       <div class="preview" aria-live="polite">
@@ -47,9 +48,10 @@
         <button class="primary" id="copyBtn" disabled>Salin Link</button>
         <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener" aria-disabled="true" style="pointer-events:none;opacity:.45">Tes Undangan</a>
       </div>
+      <a class="btn share" id="shareBtn" href="#" target="_blank" rel="noopener" aria-disabled="true" style="pointer-events:none;opacity:.45">Kirim Undangan via WhatsApp ↗</a>
       <p class="status" id="status" role="status"></p>
     </section>
-    <p class="note">Tips: buat satu link untuk setiap nama, lalu kirim ke tamu yang sesuai. Link ini menampilkan nama berdasarkan parameter URL; orang yang mengubah link juga dapat mengubah nama yang terlihat.</p>
+    <p class="note">Tips: buat satu link untuk setiap nama. Tombol WhatsApp akan membuka pesan lengkap yang siap dikirim; periksa kembali pesannya lalu tekan Kirim di WhatsApp. Link ini menampilkan nama berdasarkan parameter URL; orang yang mengubah link juga dapat mengubah nama yang terlihat.</p>
   </main>
   <script>
     const BASE_URL = 'https://nizarmlnrfn.github.io/lidia_nizar_wedding/';
@@ -59,6 +61,7 @@
     const copyBtn = document.getElementById('copyBtn');
     const openBtn = document.getElementById('openBtn');
     const status = document.getElementById('status');
+    const shareBtn = document.getElementById('shareBtn');
     let currentUrl = '';
     function update(){
       const name = input.value.trim();
@@ -70,6 +73,11 @@
       openBtn.style.pointerEvents = currentUrl ? 'auto' : 'none';
       openBtn.style.opacity = currentUrl ? '1' : '.45';
       openBtn.setAttribute('aria-disabled', currentUrl ? 'false' : 'true');
+      const message = name ? `Assalamu’alaikum warahmatullahi wabarakatuh.\n\nKepada Yth. ${name},\n\nDengan penuh kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:\n\n💍 Lidia & Nizar\n📅 28 November 2026\n📍 Bale Sari Venue (Saung Gandasari)\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nBerikut undangan digital kami:\n${currentUrl}\n\nTerima kasih atas perhatian dan doa restunya.\n\nWassalamu’alaikum warahmatullahi wabarakatuh.` : '';
+      shareBtn.href = currentUrl ? 'https://wa.me/?text=' + encodeURIComponent(message) : '#';
+      shareBtn.style.pointerEvents = currentUrl ? 'auto' : 'none';
+      shareBtn.style.opacity = currentUrl ? '1' : '.45';
+      shareBtn.setAttribute('aria-disabled', currentUrl ? 'false' : 'true');
       status.textContent = '';
     }
     input.addEventListener('input', update);
