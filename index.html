@@ -76,6 +76,9 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
 .rsvp-note{font-size:11px;line-height:1.5;opacity:.8;text-align:center;margin-top:2px}
 .gift{margin-top:22px;background:#ffffff80;border:2px solid #ffffff80;border-radius:24px;padding:20px;box-shadow:5px 5px 0 rgba(29,29,27,.06)}
 .gift h3{margin:0 0 7px;font-size:14px;text-transform:uppercase;letter-spacing:.15em}
+.copy-account{margin-top:7px;border:1.5px solid var(--ink);border-radius:999px;background:var(--cream);color:var(--ink);padding:8px 13px;font:inherit;font-size:11px;font-weight:900;cursor:pointer;}
+.copy-account:active{transform:scale(.98)}
+.copy-status{font-size:11px;margin-top:5px;min-height:14px;color:#286b42}
 .closing{background:#202022;color:#f582b2;justify-content:flex-start}
 .closing .script{font-size:clamp(58px,17vw,92px);font-weight:900;line-height:.78;letter-spacing:-.07em;font-style:italic;color:#f582b2}
 .closing .names{font-family:"Playfair Display",serif;font-size:40px;margin-top:28px;color:#f582b2}
@@ -342,11 +345,15 @@ input[type="text"]:focus{border-color:var(--pink);background:#fff}
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">BCA</p>
       <p style="margin-top:4px;font-size:13px;font-weight:900">Lidia Apriyani</p>
       <p style="font-size:13px">4731817035</p>
+      <button class="copy-account" type="button" onclick="copyAccountNumber('4731817035', 'copyLidiaStatus')">Salin No. Rekening</button>
+      <p class="copy-status" id="copyLidiaStatus" aria-live="polite"></p>
     </div>
     <div style="margin-top:12px">
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">BCA</p>
       <p style="margin-top:4px;font-size:13px;font-weight:900">Nizar Maulana Rifan</p>
       <p style="font-size:13px">2170382938</p>
+      <button class="copy-account" type="button" onclick="copyAccountNumber('2170382938', 'copyNizarStatus')">Salin No. Rekening</button>
+      <p class="copy-status" id="copyNizarStatus" aria-live="polite"></p>
     </div>
     <div style="margin-top:16px;padding-top:12px;border-top:1px solid #0002">
       <p style="font-size:11px;font-weight:900;letter-spacing:.08em">WEDDING GIFT VIA KIRIMAN</p>
@@ -417,6 +424,29 @@ function tick(){
   ["days","hours","mins","secs"].forEach((id,i)=>document.getElementById(id).textContent=String(vals[i]).padStart(2,"0"));
 }
 tick(); setInterval(tick,1000);
+
+async function copyAccountNumber(number, statusId){
+  const status = document.getElementById(statusId);
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(number);
+    } else {
+      const field = document.createElement('textarea');
+      field.value = number;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand('copy');
+      field.remove();
+      if (!copied) throw new Error('Copy failed');
+    }
+    status.textContent = 'Nomor rekening berhasil disalin!';
+  } catch (err) {
+    status.textContent = 'Belum bisa disalin otomatis. Silakan salin nomor di atas.';
+  }
+}
 
 function submitRsvp(e){
   e.preventDefault();
